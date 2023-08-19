@@ -10,7 +10,7 @@ import prisma from "../../lib/prisma";
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {
   const post = await prisma.post.findUnique({
     where: {
-      id: String(params?.id),
+      id: Number(params?.id),
     },
     include: {
       author: {
@@ -27,7 +27,7 @@ async function publishPost(id: string): Promise<void> {
   await fetch(`/api/publish/${id}`, {
     method: "PUT",
   });
-  await Router.push("/");
+  await Router.push("/drafts");
 }
 
 async function deletePost(id: string): Promise<void> {
@@ -52,15 +52,27 @@ const Post: React.FC<PostProps> = (props) => {
   return (
     <Layout>
       <div>
-        <h2>{title}</h2>
+        <img className="rounded-t-lg w-1/3" src={props.image} alt="" />
+        <h2 className="mb-1 text-3xl font-bold tracking-tight text-gray-900 dark:text-white">{props.title}</h2>
         <p>By {props?.author?.name || "Unknown author"}</p>
+        <br/>
         <ReactMarkdown children={props.content} />
+        <br/><br/>
         {!props.published && userHasValidSession && postBelongsToUser && (
-          <button onClick={() => publishPost(props.id)}>Publish</button>
-        )}
+          <a onClick={() => publishPost(props.id)} href="#" className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-green-700 rounded-lg hover:bg-yellow-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+          Publish
+          </a>
+          
+        )} 
+        
+        {" "}
+
         {userHasValidSession && postBelongsToUser && (
-          <button onClick={() => deletePost(props.id)}>Delete</button>
+          <a onClick={() => deletePost(props.id)} href="#" className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-red-700 rounded-lg hover:bg-yellow-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+          Delete
+          </a>
         )}
+
       </div>
       <style jsx>{`
         .page {
