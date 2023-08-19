@@ -116,13 +116,18 @@ const Header: React.FC = () => {
   if (session) {
     left = (
       <div className="left">
-        <Link href="/">
+          <Link href="/">
           <a className="bold" data-active={isActive("/")}>
+          <img className="rounded-t-lg" width="50px" src="https://coursereport-s3-production.global.ssl.fastly.net/uploads/school/logo/10/original/galvanize_logomark_full-color_light-background.png" alt="" />
+          </a>
+        </Link>
+        <Link href="/feed">
+          <a className="bold" data-active={isActive("/feed")}>
             Feed
           </a>
         </Link>
         <Link href="/drafts">
-          <a data-active={isActive("/drafts")}>My drafts</a>
+          <a className="bold" data-active={isActive("/drafts")}>My Drafts</a>
         </Link>
         <style jsx>{`
           .bold {
@@ -136,7 +141,7 @@ const Header: React.FC = () => {
           }
 
           .left a[data-active="true"] {
-            color: gray;
+            color: blue;
           }
 
           a + a {
